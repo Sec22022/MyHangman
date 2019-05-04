@@ -5,20 +5,30 @@ import java.awt.EventQueue;
 import javax.swing.*;
 public class GUIclass extends JFrame implements IVerbatim {
 
-	public GUIclass() {
-	//private JLabel Word; 
-	JButton CheckBtn;
-	JTextField Input;
-//	private hangman Man;
+	 private hangman Man;
+	 
+
+	
+
 	Container pane = getContentPane();
 	
-	}
-	GUIclass(String titel){
-	//	Man = new hangman();
+	
+	GUIclass(){
+		JFrame Frame = new JFrame();
+	Man = new hangman();
 		setTitle("Hangman");
-		setSize(300, 100);
+		setSize(400, 500);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		JButton CheckBtn = new JButton();
+		JLabel Word = new JLabel();
+		JTextField Input = new JTextField();
+		Frame.add(CheckBtn);
+		Frame.add(Word);
+		Frame.add(Input);
+		Frame.setLayout(null);
+		Frame.setVisible(true);
+		
 	}
 
 	public static void main(String[] args) {
@@ -26,7 +36,7 @@ public class GUIclass extends JFrame implements IVerbatim {
 			@Override
 			public void run() {
 				GUIclass GUIob = new GUIclass();
-				GUIob.setVisible(true);
+				
 			}
 		}
 		);
