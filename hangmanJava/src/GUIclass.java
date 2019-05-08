@@ -1,19 +1,30 @@
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
-public class GUIclass extends JFrame implements IVerbatim {
 
-	// private hangman Man;
-	 
+
+public class GUIclass extends JFrame implements IUpdater {
+
+	private hangman Man;
+	private JFrame Frame;
+	private JButton CheckBtn;
+	public JLabel Word;
+	public JLabel Tries;
+	public JTextField Input;
 
 	
 
@@ -21,37 +32,41 @@ public class GUIclass extends JFrame implements IVerbatim {
 	
 	
 	GUIclass(){
-		JFrame Frame = new JFrame("Hello World");
-	//Man = new hangman();
+		Frame = new JFrame("Hello World");
+		
+		Man = new hangman();
+		Man.AddListener(this);
 		setTitle("Hangman");
-		Frame.setSize(700, 1080);
+		Frame.setSize(250,180 );
 		Frame.setLayout(new BorderLayout());;
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		JButton CheckBtn = new JButton();
-		CheckBtn.setSize(20, 50);
-		CheckBtn.setBorder(null);
-		CheckBtn.setMargin(new Insets(5,5,5,5));
-		JLabel Word = new JLabel("Hello Label");
-		Border Lborder = BorderFactory.createLineBorder(Color.black,5);
-		Word.setBorder(Lborder);
-		Word.setSize(150, 100);
-		JTextField Input = new JTextField();
-		Input.setSize(50, 60);
-		Input.setBorder(Lborder);
+		
+		CheckBtn = new JButton("Check letter");
+		CheckHandler handler = new CheckHandler();
+		CheckBtn.addActionListener(handler);
+		
+	
+		
+		Word = new JLabel(Man.getWord());
+		Tries = new JLabel(Integer.toString(Man.getTries()));
+		
+		Input = new JTextField();
+	
 	
 		Frame.add(CheckBtn);
-		Frame.add(Box.createHorizontalStrut(100));
+	//	Frame.add(Box.createHorizontalStrut(100));
 		Frame.getContentPane().add(Word);
-		Frame.add(Box.createHorizontalStrut(100));
+		Frame.add(Tries);
+	
 		Frame.add(Input);
-		Frame.add(Box.createHorizontalStrut(100));
-		Frame.setLayout(null);
+	
+		Frame.setLayout(new GridLayout(3,2));
 	
 		
 		Frame.setVisible(true);
 		Frame.setLocation(80, 80);
-		
+		JFrame.setDefaultLookAndFeelDecorated(true);
 		
 		
 	}
@@ -66,16 +81,38 @@ public class GUIclass extends JFrame implements IVerbatim {
 		}
 		);
 	
+	}	
+	
+
+	
+	private class CheckHandler implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			if(Input != null && Input.toString().matches("[a-z|A-Z]")) {
+				if(Man.CheckLetter(Input.toString().charAt(0)))
+					Man.UpdatedWord();
+			}
+		}
+	}
+
+
+
+	@Override
+	public void WordDiscovered() {
+		JOptionPane.showMessageDialog(this, "Congratulation! You have won!");
 		
-	
-
 	}
-	
 
-	public String MakeWord(String W) {
-	//	Word = new JLabel(W);
-		return null;
+	@Override
+	public void ReduceTries() {
+		Tries = new JLabel(Integer.toString(Man.getTries()));
+		Tries.repaint();
+		
 	}
-	
 
 }
+	
+
+	
+
+
