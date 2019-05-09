@@ -88,8 +88,11 @@ public class GUIclass extends JFrame implements IUpdater {
 	private class CheckHandler implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			if(Input != null && Input.toString().matches("[a-z|A-Z]")) {
-				if(Man.CheckLetter(Input.toString().charAt(0)))
+			
+			
+		
+			if(( Input.toString().isEmpty() == false )&&Input.getText().matches("[a-zA-Z]")) {
+				if(Man.CheckLetter(Input.getText().charAt(0)))
 					Man.UpdatedWord();
 			}
 		}
@@ -105,7 +108,7 @@ public class GUIclass extends JFrame implements IUpdater {
 
 	@Override
 	public void ReduceTries() {
-		Tries = new JLabel(Integer.toString(Man.getTries()));
+		Tries.setText(Integer.toString(Man.getTries()));
 		Tries.repaint();
 		
 	}
