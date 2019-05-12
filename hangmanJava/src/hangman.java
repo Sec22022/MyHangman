@@ -1,10 +1,9 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 
@@ -55,6 +54,10 @@ public class hangman {
 		if(discovered==false) {
 			TriesLeft--;
 			Listener.ReduceTries();
+			if(TriesLeft<=0)
+				Listener.Lost();
+			
+				
 		}
 		return discovered;
 	}
@@ -63,7 +66,7 @@ public class hangman {
 		
 		char[] TmpLetters = WordPr.toCharArray();
 		String RetString = "" + TmpLetters[0];
-		for(int cnt = 1; cnt <= WordPr.length(); cnt++ ) {
+		for(int cnt = 1; cnt < WordPr.length(); cnt++ ) {
 			if(DiscoveredLetters[cnt]) {
 				RetString += TmpLetters[cnt];
 			}
@@ -95,7 +98,10 @@ public String MakeWord() throws IOException, FileNotFoundException{
 		String InputOfFile = bReader.readLine();
 		bReader.close();
 		String [] WordsSplitted = InputOfFile.split(",");
-		WordPr = WordsSplitted[0];
+		
+		Random randomIndx = new Random();
+		int randomNum = randomIndx.nextInt(WordsSplitted.length);
+		WordPr = WordsSplitted[randomNum];
 		return WordPr;
 		}
 	catch(FileNotFoundException e) {

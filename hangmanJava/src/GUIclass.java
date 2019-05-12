@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -14,17 +15,24 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 
 public class GUIclass extends JFrame implements IUpdater {
 
 	private hangman Man;
+	
 	private JFrame Frame;
+	
 	private JButton CheckBtn;
+	
 	public JLabel Word;
 	public JLabel Tries;
+	public JLabel UsedLetters;
+	
 	public JTextField Input;
+	
 
 	
 
@@ -52,21 +60,23 @@ public class GUIclass extends JFrame implements IUpdater {
 		Tries = new JLabel(Integer.toString(Man.getTries()));
 		
 		Input = new JTextField();
+		UsedLetters = new JLabel("Letters Used:");
+		
 	
 	
 		Frame.add(CheckBtn);
 	//	Frame.add(Box.createHorizontalStrut(100));
 		Frame.getContentPane().add(Word);
-		Frame.add(Tries);
-	
+		Frame.add(Tries);	
 		Frame.add(Input);
-	
+		Frame.add(UsedLetters);
 		Frame.setLayout(new GridLayout(3,2));
 	
 		
 		Frame.setVisible(true);
 		Frame.setLocation(80, 80);
 		JFrame.setDefaultLookAndFeelDecorated(true);
+
 		
 		
 	}
@@ -91,12 +101,37 @@ public class GUIclass extends JFrame implements IUpdater {
 			
 			
 		
-			if(( Input.toString().isEmpty() == false )&&Input.getText().matches("[a-zA-Z]")) {
-				if(Man.CheckLetter(Input.getText().charAt(0)))
+		
+					
 					Man.UpdatedWord();
-			}
+					javax.swing.SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+					
+							if(( Input.toString().isEmpty() == false )&&Input.getText().matches("[a-zA-Z]")) {
+								if(Man.CheckLetter(Input.getText().charAt(0)))
+									
+									UsedLetters.setText(UsedLetters.getText()+Input.getText());
+									UsedLetters.repaint();
+									
+									Input.setText("");
+									Input.repaint();
+									
+						}
+					}
+					
+			});
 		}
-	}
+
+		
+
+
+
+	
+
+
+
+}
 
 
 
@@ -108,12 +143,17 @@ public class GUIclass extends JFrame implements IUpdater {
 
 	@Override
 	public void ReduceTries() {
+		
 		Tries.setText(Integer.toString(Man.getTries()));
 		Tries.repaint();
 		
 	}
 
-}
+	@Override
+	public void Lost() {
+		CheckBtn.setEnabled(false);
+		JOptionPane.showMessageDialog(this, "Game Over");
+	}}
 	
 
 	
